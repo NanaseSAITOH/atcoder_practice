@@ -1,37 +1,38 @@
-def DFS1(s,ans):
-    if(s <= N and len(C1[s])!=0):
-        ans+=1
-        if(s in C1[C1[s][0]]):C1[C1[s][0]].remove(s)
-        return DFS1(C1[s][0], ans)
-    else:
-        return int(s), ans
-
-
-def DFS2(s, ans):
-    if(s <= N and len(C2[s]) != 0):
-        ans += 1
-        if(s in C2[C2[s][0]]):
-            C2[C2[s][0]].remove(s)
-        return DFS2(C2[s][0], ans)
-    else:
-        return int(s), ans
+def DFS(s,ans):
+    if(s <= N and len(G[s])!=0):
+        for i in G[s]:
+            if(dist[i]==float("inf")):
+                dist[i]=ans+1
+                DFS(i, dist[i])
     
 N = int(input())
 A = []
 B = []
-C1 = [[] for i in range(N+1)]
+G = [[] for i in range(N+1)]
 C2 = [[] for i in range(N+1)]
+dist = [float("inf")]*(N+1)
+
 for i in range(N-1):
     a,b=map(int,input().split())
-    C1[a].append(b)
-    C1[b].append(a)
-    C2[b].append(a)
-    C2[a].append(b)
+    G[a].append(b)
+    G[b].append(a)
     A.append(a)
 
 #端点1の探索
-s, ans = DFS1(A[0],0)
+dist[A[0]]=0
+DFS(A[0],0)
+most_big_dist = -1
+for i,v in enumerate(dist):
+    if(v!=float("inf") and most_big_dist < v):
+        most_big_dist = v
+        s = i
 
+dist = [float("inf")]*(N+1)
 #端点2と，そこまでの距離の探索
-t, ans = DFS2(s,0)
-print(ans+1)
+DFS(s,0)
+most_big_dist = -1
+for i, v in enumerate(dist):
+    if(v != float("inf") and most_big_dist < v):
+        most_big_dist = v
+        s = i
+print(most_big_dist+1)
