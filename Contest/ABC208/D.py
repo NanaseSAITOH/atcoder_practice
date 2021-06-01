@@ -1,30 +1,41 @@
+def calculate_all_sum(mid):
+    for i in range(N):
+        for j in range(N):
+            all_sum[i+1][j+1] = (A[i][j]>mid)
+    #横方向の累積和
+    for i in range(N+1):
+        for j in range(N):
+            all_sum[i][j+1] += all_sum[i][j]
+    #縦方向の累積和
+    for i in range(N):
+        for j in range(N+1):
+            all_sum[i+1][j] += all_sum[i][j]
+    return all_sum
+
 N, K = map(int,input().split())
 A = []
 for i in range(N):
     A.append(list(map(int, input().split())))
 mean = int(K**2/2)+1
-dp = [[[] for j in range(N-K+1)] for i in range(N-K+1)]
-ans = []
-for ki in range(K):
-    for kj in range(K):
-        dp[0][0].append(A[ki][kj])
-last_i=0
-last_j=0
-for i in range(N-K+1):
-    for j in range(N-K+1):
-        if(i==0 and j==0):continue
-        if(last_i!=i):
-            dp[i][j] = dp[last_i][j]
-            for k in range(K):
-                dp[i][j].append(A[i+k][j])
-                dp[i][j].remove(A[i-k][j])
-        elif(last_j!=j):
-            dp[i][j] = dp[i][last_j]
-            for k in range(K):
-                dp[i][j].append(A[i][j+k])
-                dp[i][j].remove(A[i][j-k])
-        dp[i][j] = sorted(dp[i][j], reverse=True)
-        ans.append(dp[i][j][mean-1])
-        last_j = j
-        last_i = i
-print(min(ans))
+
+all_sum = [[0]*(N+1) for i in range(N+1)]
+
+left = -1
+right = float("inf")
+while(1<left-right):
+    mid = (left+right)/2
+    OK = False
+    all_sum=calculate_all_sum(mid)
+    for i in range(N-K+1):
+        for j in range(N-K+1):
+            now = all_sum[i+K][j+K]
+            now -= all_sum[i+K][j]
+            now -= all_sum[i][j+K]
+            now += all_sum[i][j]
+            if(now<mean):
+                OK=True
+    if(OK):
+        left = mid
+    else:
+        right=mid
+print(right)
