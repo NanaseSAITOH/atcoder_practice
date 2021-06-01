@@ -1,13 +1,13 @@
 def binary_search(a, L):
-    left = 0
-    right = len(L)-1
+    left = -1
+    right = N+1
     while(right-left>1):
-        mid = (right-left)//2
-        if(L[mid]<a):
-            left = mid+1
-        elif(L[mid] > a):
-            right = mid-1
-    if L[mid] > a:
+        mid = (right+left)//2
+        if(L[mid-1]<a):
+            left = mid
+        elif(L[mid-1] > a):
+            right = mid
+    if L[mid-1] > a:
       return mid
     else:
       return mid + 1
