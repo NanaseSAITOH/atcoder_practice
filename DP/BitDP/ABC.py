@@ -23,3 +23,4 @@ for S in range((1 << N)):
                     dp_load_num[v][S] = dp_load_num[u][S | 1 << u]
 print(dp_time[0][0])
 print(dp_load_num[0][0])
+ 
