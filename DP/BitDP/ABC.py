@@ -18,7 +18,12 @@ dp_load_num[0][0] = 1
 for S in range((1 << N)):
     for v in range(N):
         for u in range(N):
+            #Sにvが存在するとき
             if(not(S & 1 << v == 0)):
+                a = bin(S)
+                b = bin(1 << v)
+                #排他的論理和(Sとvの一致箇所を除去する)(Sからvを除去する)
+                c = bin(S ^ (1 << v))
                 if(dp_time[S][v] > Distance[v][u]+dp_time[S ^ (1 << v)][u]
                    and Time[v][u] >= Distance[v][u]+dp_time[S ^ (1 << v)][u]):
                     dp_time[S][v] = Distance[v][u]+dp_time[S ^ (1 << v)][u]
