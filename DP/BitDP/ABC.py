@@ -1,3 +1,4 @@
+# https://atcoder.jp/contests/s8pc-1/submissions/23196687
 N, M = map(int, input().split())
 Distance = [[float("inf") for _ in range(N)] for _ in range(N)]
 Time = [[0 for _ in range(N)] for _ in range(N)]
