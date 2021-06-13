@@ -13,5 +13,12 @@ for k in range(V):
             if(c[s][s]<0):
                 print("NEGATIVE CYCLE")
                 sys.exit()
-for i in c:
+ans= [[""]*V for i in range(V)]
+for i in range(V):
+    for j in range(V):
+        if(c[i][j]==float("inf")):
+            ans[i][j]="INF"
+        else:
+            ans[i][j] = str(c[i][j])
+for i in ans:
     print(*i)
