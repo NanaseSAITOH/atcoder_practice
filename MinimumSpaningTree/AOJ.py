@@ -12,7 +12,7 @@ for i in C[0]:
     heappush(hq, (i[1], i[0]))
 screen[0] = True
 ans = 0
-while not(all(screen)):
+while hq:
     cost, goal = heappop(hq)
     if(screen[goal] == True):
         continue
