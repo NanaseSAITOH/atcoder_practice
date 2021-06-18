@@ -1,31 +1,69 @@
+from collections import defaultdict
+
+class UnionFind():
+    def __init__(self, n):
+        self.n = n
+        self.parents = [-1] * n
+
+    def find(self, x):
+        if self.parents[x] < 0:
+            return x
+        else:
+            self.parents[x] = self.find(self.parents[x])
+            return self.parents[x]
+
+    def union(self, x, y):
+        x = self.find(x)
+        y = self.find(y)
+
+        if x == y:
+            return
+
+        if self.parents[x] > self.parents[y]:
+            x, y = y, x
+
+        self.parents[x] += self.parents[y]
+        self.parents[y] = x
+
+    def size(self, x):
+        return -self.parents[self.find(x)]
+
+    def same(self, x, y):
+        return self.find(x) == self.find(y)
+
+    def members(self, x):
+        root = self.find(x)
+        return [i for i in range(self.n) if self.find(i) == root]
+
+    def roots(self):
+        return [i for i, x in enumerate(self.parents) if x < 0]
+
+    def group_count(self):
+        return len(self.roots())
+
+    def all_group_members(self):
+        group_members = defaultdict(list)
+        for member in range(self.n):
+            group_members[self.find(member)].append(member)
+        return group_members
+
+    def __str__(self):
+        return '\n'.join(f'{r}: {m}' for r, m in self.all_group_members().items())
+
 from heapq import heappush, heappop
-import numpy as np
 
 N, M, K = map(int, input().split())
-C = [[] for i in range(N)]
-screen = [False]*N
-
+ans = 0
+union_find = UnionFind(N)
+hq = []
 for i in range(M):
     s, g, d = map(int, input().split())
-    C[s-1].append([g-1, d])
-    C[g-1].append([s-1, d])
-hq = []
-for g,d in C[0]:
-    heappush(hq,(d, g))
-ans = 0
-screen[0] = True
-load_cost = []
-while hq:
-    cost, goal = heappop(hq)
-    ans += cost
-    load_cost.append(cost)
-    if(screen[goal]==True):
-        continue
-    screen[goal] = True
-    for g,d in C[goal]:
-        if(screen[g]==False):
-            heappush(hq,(d,g))
-
-for k in range(K-1):
-    ans-=load_cost[k]
+    heappush(hq,(d,s-1, g-1))
+a = 0
+while(a!=N-K):
+    cost, start, goal = heappop(hq)
+    if(union_find.same(start, goal)==False):
+        union_find.union(start, goal)
+        ans+=cost
+        a+=1
 print(ans)
