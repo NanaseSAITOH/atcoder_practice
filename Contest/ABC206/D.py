@@ -54,20 +54,13 @@ class UnionFind():
 
 N = int(input())
 A = list(map(int, input().split()))
-union_find = UnionFind(N)
+union_find = UnionFind(2*10**5+1)
 for i in range(int(N/2)-1):
-    if(A[i] != A[N-1-i]):
-        union_find.union(A[i], A[N-1-i])
+    union_find.union(A[i], A[N-1-i])
 
 d = {0: 0}
-for v in union_find.parents:
-    if(v >= 0):
-        d[v] = union_find.size(v)-1
-ans = 0
-
-for v in d.values():
-    if(v == 0):
-        continue
-    else:
-        ans += v
-print(ans)
+res = 0
+for i in union_find.parents:
+    if i < 0:
+        res += -i-1
+print(res)
