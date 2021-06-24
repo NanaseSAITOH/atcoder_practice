@@ -1,5 +1,6 @@
 from collections import deque
 move = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+Poo = False
 
 
 def BFS(c, ra, ca, rb, cb):
@@ -19,9 +20,23 @@ def BFS(c, ra, ca, rb, cb):
     return False
 
 
+def dfs(c, x, y, rb, cb):
+    global Poo
+    if (x < 0 or y < 0 or x > W-1 or y > H-1 or c[x][y] != True or Flag[x][y] != False):
+        return 
+    if (x == rb and y == cb):
+        Poo=True
+    Flag[x][y] = True
+    dfs(c, x + 1, y, rb, cb)
+    dfs(c, x - 1, y, rb, cb)
+    dfs(c, x, y+1, rb, cb)
+    dfs(c, x, y - 1, rb, cb)
+    return
+
 H, W = map(int, input().split())
 m = [[False]*H for i in range(W)]
 Q = int(input())
+Flag = [[False]*H for i in range(W)]
 for i in range(Q):
     q = list(map(int, input().split()))
     if(q[0] == 1):
@@ -34,7 +49,9 @@ for i in range(Q):
         rb -= 1
         cb -= 1
         if(m[ra][ca] == True and m[rb][cb] == True):
-            if(BFS(m, ra, ca, rb, cb)):
+            Poo = False
+            dfs(m, ra, ca, rb, cb)
+            if(Poo==True):
                 print("Yes")
             else:
                 print("No")
