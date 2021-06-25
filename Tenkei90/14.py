@@ -13,4 +13,5 @@ for a in A:
         B[i]=-1
     else:
         ans += abs(B.pop(i-1)-a)
+        
 print(ans)
