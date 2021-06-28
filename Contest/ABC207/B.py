@@ -13,5 +13,5 @@ while flag:
     if((a/c)<=D):
         flag = False
     ans += 1
-
+ 
 print(ans)
