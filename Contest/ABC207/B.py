@@ -1,17 +1,10 @@
 import sys
 A, B, C, D = map(int, input().split())
-flag = True
-ans = 0
-a = A
-c = 0
-if(B>C):
+if(D*C==B):
     print(-1)
     sys.exit()
-while flag:
-    a+=B
-    c+=C
-    if((a/c)<=D):
-        flag = False
-    ans += 1
- 
-print(ans)
+n = int(A/(D*C-B))
+if(D*C-B > 0):
+    print(n+1)
+else:
+    print(-1)
